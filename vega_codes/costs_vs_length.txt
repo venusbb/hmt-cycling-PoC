@@ -1,0 +1,58 @@
+{
+  $schema: "https://vega.github.io/schema/vega-lite/v2.json"
+
+  data: {
+    url: {
+      %context%: true
+      index: england_metrics_feature
+      body: {
+        size: 10000,
+        _source: ['@england_feature*', 'properties.total_cost', 'properties.total_length', 'properties.lad17nm', 'properties.bcr', 'properties.total_benefits']
+      }
+    }
+      format: { property: "hits.hits" }
+  },
+
+  "transform": [
+    {"calculate": "datum.total_benefits/datum.total_costs", "as": "b_c"}
+  ],
+
+  "selection": {
+    "view": {"type": "interval", "bind": "scales"}
+  },
+
+  encoding: {
+    x: {
+      field: _source.properties.total_cost
+      type: quantitative
+      axis: { title: "Total cost £", "format": "~s"}
+    }
+    y: {
+      field: _source.properties.total_length
+      type: quantitative
+      axis: { title: "Total length (km)", "format": "~s"}
+    }
+    color: {
+      field: _source.properties.bcr
+      type: quantitative
+      legend: { title: "BCR" }
+    }
+
+    shape: {
+      field: "_source.properties.lad17nm"
+      type: nominal
+    }
+
+    tooltip: [
+      {"field": "_source.properties.lad17nm", "type": "nominal", "title": "LA"},
+      {"field": "_source.properties.total_cost", "type": "quantitative", "title": "Cost", "format": "~s"},
+      {"field": "_source.properties.total_benefits", "type": "quantitative", "title": "Benefits", "format": "~s"},
+      {"field": "_source.properties.bcr", "type": "quantitative", "title": "BCR", "format": "~s"}
+    ]
+  }
+
+  mark: {
+    type:circle
+    size:150
+  }
+}

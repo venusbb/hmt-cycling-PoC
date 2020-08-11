@@ -1,0 +1,28 @@
+## HMT Cycling proof of concept project
+
+This repository consists of the open data and scripts we used for the HMT cycling project.
+The main dataset used:
+- National statistics
+- CyIPT
+- CyIPT Rapid
+
+The large source data files (json, geojson and csv) are managed with [git-lfs extension](https://git-lfs.github.com/).
+
+This script codes are not optimised and are not actively maintained.
+
+### environment.sh
+To upload code to Elastic cloud service, you need to create an 'environment.sh' file locally containing these variables
+export CLOUD_ID={{your elastic cloud id}}
+export API_KEY_1={{part 1 of the api key}}
+export API_KEY_2={{part 2 of the api key}}
+
+### List of scripts:
+- download-from-cyipt-api-upload-directly.py
+This is a script written in Python to download data from CyIPT using API directly (with consideration of CyIPT rate limiting). The data is downloaded as json and upload to Elastic cluster directly.
+
+- load_to_elastic.py
+This is a script to load geojson map data to an elastic index.
+
+
+### Note of csv files
+CSV files in the data folder are loaded to Elastic via the GUI (Machine learning/ file upload)
